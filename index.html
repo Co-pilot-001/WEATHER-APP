@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f4f5f1" />
+    <meta name="description" content="A considered look at the weather, wherever you are." />
+    <title>Daybreak — Weather, considered</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="Daybreak home">
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span>daybreak<span class="brand-period">.</span></span>
+        </a>
+
+        <form class="search-form" id="search-form" role="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.2 4.2"></path></svg>
+          <label class="sr-only" for="city-search">Search for a city</label>
+          <input id="city-search" name="city" type="search" placeholder="Search a city..." value="London" autocomplete="off" required />
+          <button class="search-submit" type="submit" aria-label="Search city"><span>Search</span><span aria-hidden="true">↗</span></button>
+        </form>
+
+        <div class="topbar-actions">
+          <div class="unit-switch" role="group" aria-label="Temperature unit">
+            <button type="button" data-unit="celsius" aria-pressed="true">°C</button>
+            <button type="button" data-unit="fahrenheit" aria-pressed="false">°F</button>
+          </div>
+          <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch theme">
+            <svg class="sun-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.5"></circle><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"></path></svg>
+          </button>
+        </div>
+      </header>
+
+      <main id="top">
+        <div class="status-line" id="status-line" role="status" aria-live="polite">
+          <span class="status-dot"></span>
+          <span id="status-text">Connecting to the forecast</span>
+        </div>
+
+        <section class="hero" id="hero" aria-labelledby="location-name">
+          <div class="hero-image" aria-hidden="true"></div>
+          <div class="hero-shade" aria-hidden="true"></div>
+          <div class="hero-topline">
+            <div class="location-lockup">
+              <span class="eyebrow" id="local-date">LOCAL FORECAST</span>
+              <h1 id="location-name">London</h1>
+              <p class="location-country" id="location-country">United Kingdom</p>
+            </div>
+            <div class="live-pill"><span class="live-dot"></span> LIVE CONDITIONS</div>
+          </div>
+
+          <div class="hero-weather">
+            <div class="temperature-block">
+              <div class="temperature" id="temperature">--<span>°</span></div>
+              <div class="condition-copy">
+                <p class="condition" id="condition">Waiting for the sky</p>
+                <p class="feels-like">Feels like <span id="feels-like">--°</span></p>
+              </div>
+            </div>
+            <div class="weather-art" id="current-icon" aria-hidden="true"></div>
+          </div>
+
+          <div class="hero-bottom">
+            <span class="hero-note" id="daylight-note">A little weather, a little perspective.</span>
+            <span class="updated-at" id="updated-at">—</span>
+          </div>
+        </section>
+
+        <div class="content-grid">
+          <section class="details-section" aria-labelledby="details-heading">
+            <div class="section-heading">
+              <div>
+                <span class="eyebrow">RIGHT NOW</span>
+                <h2 id="details-heading">The details</h2>
+              </div>
+              <span class="section-caption">A closer look outside</span>
+            </div>
+            <div class="metrics-grid">
+              <article class="metric-card">
+                <span class="metric-icon humidity-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3s6.5 7.1 6.5 11.5a6.5 6.5 0 0 1-13 0C5.5 10.1 12 3 12 3Z"></path><path d="M9 15.5a3 3 0 0 0 3 3"></path></svg></span>
+                <span class="metric-label">Humidity</span>
+                <strong class="metric-value" id="humidity">--<small>%</small></strong>
+                <span class="metric-footnote">Relative humidity</span>
+              </article>
+              <article class="metric-card">
+                <span class="metric-icon wind-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 8h12a3 3 0 1 0-3-3M2 12h17a2 2 0 1 1-2 2M4 16h8a3 3 0 1 1-3 3"></path></svg></span>
+                <span class="metric-label">Wind</span>
+                <strong class="metric-value" id="wind">--<small> km/h</small></strong>
+                <span class="metric-footnote">Steady conditions</span>
+              </article>
+              <article class="metric-card">
+                <span class="metric-icon pressure-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 18a8 8 0 1 1 16 0"></path><path d="m12 14 4-5M7 18h.01M12 18h.01M17 18h.01"></path></svg></span>
+                <span class="metric-label">Pressure</span>
+                <strong class="metric-value" id="pressure">--<small> hPa</small></strong>
+                <span class="metric-footnote">At sea level</span>
+              </article>
+              <article class="metric-card">
+                <span class="metric-icon visibility-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z"></path><circle cx="12" cy="12" r="2.5"></circle></svg></span>
+                <span class="metric-label">Visibility</span>
+                <strong class="metric-value" id="visibility">--<small> km</small></strong>
+                <span class="metric-footnote">Across the horizon</span>
+              </article>
+            </div>
+          </section>
+
+          <section class="forecast-section" aria-labelledby="forecast-heading">
+            <div class="section-heading">
+              <div>
+                <span class="eyebrow">THE DAYS AHEAD</span>
+                <h2 id="forecast-heading">Five-day forecast</h2>
+              </div>
+              <span class="section-caption" id="forecast-location">London</span>
+            </div>
+            <div class="forecast-list" id="forecast-list" aria-live="polite">
+              <div class="forecast-placeholder">The forecast is on its way</div>
+            </div>
+          </section>
+        </div>
+
+        <section class="sun-section" aria-labelledby="sun-heading">
+          <div class="sun-heading">
+            <div>
+              <span class="eyebrow">DAYLIGHT</span>
+              <h2 id="sun-heading">The sun's schedule</h2>
+            </div>
+            <span class="sun-date" id="sun-date">Today</span>
+          </div>
+          <div class="sun-content">
+            <div class="sun-time-block">
+              <span class="sun-symbol sunrise-symbol" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M6 22a10 10 0 0 1 20 0M16 4v6m-9.2-.2 4.2 4.2m12-4.2-4.2 4.2M3 22h26M7 27h18"></path></svg></span>
+              <div><span class="sun-label">Sunrise</span><strong id="sunrise">--:--</strong></div>
+            </div>
+            <div class="sun-track-wrap" aria-label="Daylight duration">
+              <div class="sun-track"><span class="sun-track-fill" id="sun-track-fill"></span><span class="sun-track-orb" id="sun-track-orb"></span></div>
+              <div class="sun-track-labels"><span id="sunrise-label">--:--</span><span id="sunset-label">--:--</span></div>
+            </div>
+            <div class="sun-time-block sunset-block">
+              <span class="sun-symbol sunset-symbol" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M6 22a10 10 0 0 1 20 0M16 4v6m-9.2-.2 4.2 4.2m12-4.2-4.2 4.2M3 22h26M7 27h18"></path></svg></span>
+              <div><span class="sun-label">Sunset</span><strong id="sunset">--:--</strong></div>
+            </div>
+          </div>
+        </section>
+
+        <p class="error-message" id="error-message" role="alert" hidden></p>
+      </main>
+
+      <footer class="footer">
+        <span>Made for the days outside.</span>
+        <span>Weather data by <a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Open-Meteo</a></span>
+      </footer>
+    </div>
+  </body>
+</html>
